@@ -1,0 +1,78 @@
+<section
+  class="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-3xl p-6 md:p-8 h-[540px] flex flex-col shadow-2xl"
+>
+  <div class="flex items-center justify-between gap-4 mb-4">
+    <div>
+      <h2 class="text-2xl md:text-3xl font-semibold text-[var(--color-white)]">
+        Lista de presença
+      </h2>
+      <p class="mt-2 text-sm text-[var(--color-muted)]">
+        Os dados são inseridos dinamicamente sem recarregar a página.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      (click)="clearTable()"
+      [disabled]="!canClear()"
+      class="rounded-2xl border border-[var(--color-primary)] px-4 py-2 text-sm font-medium text-[var(--color-white)] transition hover:bg-[var(--color-primary)]/10 disabled:cursor-not-allowed disabled:opacity-40"
+    >
+      Limpar tabela
+    </button>
+  </div>
+
+  <div
+    class="flex-1 overflow-auto rounded-2xl border border-[var(--color-border)] bg-[var(--color-background)]"
+  >
+    <table class="min-w-full text-sm text-left">
+      <thead class="sticky top-0 bg-[var(--color-primary)] text-[var(--color-white)]">
+        <tr>
+          <th class="px-4 py-3 font-semibold">Nome</th>
+          <th class="px-4 py-3 font-semibold">E-mail</th>
+          <th class="px-4 py-3 font-semibold">Data</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (item of presenceService.entries(); track item.id) {
+          <tr class="border-t border-[var(--color-border)] text-[var(--color-white)]">
+            <td class="px-4 py-3">{{ item.name }}</td>
+            <td class="px-4 py-3">{{ item.email }}</td>
+            <td class="px-4 py-3">
+              {{ item.createdAt | date:'dd/MM/yyyy HH:mm' }}
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td
+              colspan="3"
+              class="px-4 py-10 text-center text-[var(--color-muted)]"
+            >
+              Nenhum dado inserido ainda.
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-4 flex flex-col sm:flex-row gap-3">
+    <button
+      type="button"
+      (click)="downloadPdf()"
+      [disabled]="!canDownload()"
+      class="flex-1 rounded-2xl bg-[var(--color-primary)] px-4 py-3 font-semibold text-[var(--color-white)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40"
+    >
+      Baixar PDF
+    </button>
+
+    <button
+      type="button"
+      (click)="downloadCsv()"
+      [disabled]="!canDownload()"
+      class="flex-1 rounded-2xl border border-[var(--color-primary)] px-4 py-3 font-semibold text-[var(--color-white)] transition hover:bg-[var(--color-primary)]/10 disabled:cursor-not-allowed disabled:opacity-40"
+    >
+      Baixar CSV
+    </button>
+  </div>
+</section>
